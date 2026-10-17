@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Speed Rush Racing</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#263c68,#10131d 55%,#07090d);
+    color:white;
+    overflow-x:hidden;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+#notification{
+    position:fixed;
+    top:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(-130px);
+    min-width:280px;
+    max-width:90%;
+    padding:15px 22px;
+    border-radius:15px;
+    background:rgba(18,22,32,.96);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
+    text-align:center;
+    z-index:9999;
+    transition:.35s;
+}
+
+#notification.show{
+    transform:translateX(-50%) translateY(0);
+}
+
+#notification.success{
+    border-color:#35e58b;
+}
+
+#notification.error{
+    border-color:#ff5d6c;
+}
+
+#notification.warning{
+    border-color:#ffc857;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+.screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.login-card{
+    width:min(430px,100%);
+    padding:35px;
+    border-radius:30px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(20px);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+    text-align:center;
+}
+
+.logo-car{
+    font-size:70px;
+    margin-bottom:5px;
+}
+
+.login-card h1{
+    font-size:38px;
+    letter-spacing:3px;
+}
+
+.login-card p{
+    color:#aeb8ce;
+    margin:8px 0 25px;
+}
+
+.input{
+    width:100%;
+    padding:15px;
+    margin:7px 0;
+    border:none;
+    outline:none;
+    border-radius:13px;
+    background:#171d2a;
+    color:white;
+    font-size:15px;
+}
+
+.main-btn{
+    width:100%;
+    border:none;
+    padding:15px;
+    border-radius:13px;
+    margin-top:13px;
+    background:linear-gradient(135deg,#ff3d55,#ff8a3d);
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+    box-shadow:0 8px 25px rgba(255,70,70,.25);
+}
+
+.switch-login{
+    margin-top:20px;
+    color:#7fb8ff;
+    cursor:pointer;
+}
+
+/* =========================
+   MAIN MENU
+========================= */
+
+.menu{
+    min-height:100vh;
+    padding:30px;
+}
+
+.menu-inner{
+    max-width:1100px;
+    margin:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ff4258,#ff9a3d);
+}
+
+.banner{
+    position:relative;
+    min-height:280px;
+    overflow:hidden;
+    border-radius:30px;
+    padding:40px;
+    display:flex;
+    align-items:center;
+    background:
+        linear-gradient(90deg,rgba(5,8,15,.95),rgba(5,8,15,.3)),
+        linear-gradient(135deg,#29364d,#11151e);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+.banner h1{
+    font-size:clamp(38px,6vw,70px);
+    font-style:italic;
+}
+
+.banner p{
+    margin-top:10px;
+    color:#bbc5d7;
+}
+
+.big-car{
+    position:absolute;
+    right:5%;
+    bottom:20px;
+    font-size:150px;
+    transform:rotate(-4deg);
+    filter:drop-shadow(0 20px 20px #000);
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:20px;
+}
+
+.mode-card{
+    padding:25px;
+    border-radius:22px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.1);
+    transition:.25s;
+}
+
+.mode-card:hover{
+    transform:translateY(-5px);
+    border-color:#ff5363;
+}
+
+.mode-icon{
+    font-size:45px;
+    margin-bottom:12px;
+}
+
+.mode-card h2{
+    margin-bottom:7px;
+}
+
+.mode-card p{
+    color:#9fa9bd;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.mode-card button{
+    width:100%;
+    margin-top:18px;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:#ff475b;
+    color:white;
+    font-weight:bold;
+}
+
+/* =========================
+   DIFFICULTY
+========================= */
+
+.selection{
+    max-width:900px;
+    margin:0 auto;
+    padding:35px 20px;
+}
+
+.selection h1{
+    text-align:center;
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.selection-sub{
+    text-align:center;
+    color:#9da8bd;
+    margin-bottom:30px;
+}
+
+.difficulty-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.diff{
+    padding:25px;
+    border-radius:20px;
+    background:#141a25;
+    border:1px solid #2c3444;
+    text-align:center;
+}
+
+.diff h2{
+    margin:10px 0;
+}
+
+.diff p{
+    color:#9fa9bd;
+    font-size:14px;
+}
+
+.diff button{
+    width:100%;
+    margin-top:18px;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:#ff475b;
+    color:white;
+    font-weight:bold;
+}
+
+/* =========================
+   RACE
+========================= */
+
+#raceScreen{
+    min-height:100vh;
+    background:#10141b;
+    padding:15px;
+}
+
+.race-top{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+}
+
+.stats{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.stat{
+    background:#171d28;
+    border:1px solid #293141;
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+.race-area{
+    position:relative;
+    width:min(1100px,100%);
+    height:620px;
+    margin:10px auto;
+    overflow:hidden;
+    border-radius:22px;
+    border:7px solid #222a37;
+    background:#4d5259;
+}
+
+/* road */
+
+.road{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            #272b30 0 7%,
+            #42474e 7% 48.5%,
+            #fff 48.5% 49%,
+            #42474e 49% 51%,
+            #fff 51% 51.5%,
+            #42474e 51.5% 93%,
+            #272b30 93%
+        );
+}
+
+.road-line{
+    position:absolute;
+    top:-100%;
+    width:8px;
+    height:200%;
+    background:repeating-linear-gradient(
+        to bottom,
+        white 0 55px,
+        transparent 55px 105px
+    );
+    opacity:.75;
+}
+
+.line1{
+    left:33%;
+}
+
+.line2{
+    left:66%;
+}
+
+/* start finish */
+
+.finish{
+    position:absolute;
+    top:10px;
+    left:7%;
+    right:7%;
+    height:10px;
+    background:repeating-linear-gradient(
+        90deg,
+        white 0 20px,
+        #111 20px 40px
+    );
+}
+
+/* cars */
+
+.race-car{
+    position:absolute;
+    width:58px;
+    height:92px;
+    border-radius:18px 18px 12px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    z-index:10;
+    user-select:none;
+    transition:left .08s;
+}
+
+.player-car{
+    background:linear-gradient(#ff5362,#b8172b);
+    border:3px solid #ff9da8;
+    bottom:30px;
+    left:calc(50% - 29px);
+    box-shadow:0 8px 20px #000;
+}
+
+.player2-car{
+    background:linear-gradient(#4c9fff,#1553b8);
+    border:3px solid #a7d1ff;
+}
+
+.ai-car{
+    background:linear-gradient(#8d94a0,#414751);
+    border:3px solid #c8ced8;
+}
+
+.obstacle{
+    position:absolute;
+    width:55px;
+    height:55px;
+    display:grid;
+    place-items:center;
+    font-size:34px;
+    z-index:7;
+}
+
+/* controls */
+
+.controls{
+    max-width:1000px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    padding:5px 15px 15px;
+}
+
+.control-side{
+    display:flex;
+    gap:12px;
+}
+
+.control-btn{
+    width:75px;
+    height:65px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.15);
+    background:#1c2330;
+    color:white;
+    font-size:25px;
+    font-weight:bold;
+    box-shadow:0 7px 15px #0005;
+}
+
+.gas{
+    background:linear-gradient(#ff596b,#c9162c);
+}
+
+.brake{
+    background:#343c4c;
+}
+
+/* countdown */
+
+#countdown{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:120px;
+    font-weight:900;
+    font-style:italic;
+    text-shadow:0 10px 30px #000;
+    background:#0004;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-box{
+    width:min(600px,100%);
+    padding:35px;
+    border-radius:30px;
+    background:#151b27;
+    border:1px solid #30394a;
+    box-shadow:0 25px 70px #0008;
+    text-align:center;
+}
+
+.trophy{
+    font-size:80px;
+}
+
+.result-box h1{
+    font-size:42px;
+    margin:10px 0;
+}
+
+.result-list{
+    margin:25px 0;
+    display:grid;
+    gap:10px;
+}
+
+.result-item{
+    padding:14px;
+    border-radius:12px;
+    background:#202837;
+    display:flex;
+    justify-content:space-between;
+}
+
+.result-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:13px;
+    background:#ff475b;
+    color:white;
+    font-weight:bold;
+}
+
+/* responsive */
+
+@media(max-width:750px){
+    .menu-grid,
+    .difficulty-grid{
+        grid-template-columns:1fr;
+    }
+
+    .banner{
+        min-height:330px;
+        padding:25px;
+    }
+
+    .big-car{
+        font-size:90px;
+        right:2%;
+    }
+
+    .race-area{
+        height:500px;
+    }
+
+    .control-btn{
+        width:62px;
+        height:58px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NOTIFICATION -->
+<div id="notification"></div>
+
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
+
+<section id="loginScreen" class="screen">
+
+<div class="login-card">
+
+<div class="logo-car">🏎️</div>
+
+<h1>SPEED RUSH</h1>
+
+<p>Racing Beyond Limits</p>
+
+<form id="loginForm">
+
+<input
+    id="username"
+    class="input"
+    placeholder="Username"
+    autocomplete="username"
+>
+
+<input
+    id="password"
+    class="input"
+    type="password"
+    placeholder="Password"
+    autocomplete="current-password"
+>
+
+<button class="main-btn">
+    MASUK KE GAME
+</button>
+
+</form>
+
+<div id="switchText" class="switch-login">
+Belum punya akun? Daftar
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     MAIN MENU
+========================= -->
+
+<section id="menuScreen" class="menu hidden">
+
+<div class="menu-inner">
+
+<div class="topbar">
+
+<div class="profile">
+
+<div class="avatar">👤</div>
+
+<div>
+<div>Player</div>
+<strong id="playerName">Guest</strong>
+</div>
+
+</div>
+
+<button id="logoutBtn" class="main-btn"
+style="width:auto;padding:10px 18px">
+Keluar
+</button>
+
+</div>
+
+
+<div class="banner">
+
+<div>
+
+<h1>SPEED RUSH</h1>
+
+<p>
+Tantang kecepatanmu. Hindari rintangan.
+Jadilah pembalap nomor satu.
+</p>
+
+</div>
+
+<div class="big-car">
+🏎️
+</div>
+
+</div>
+
+
+<div class="menu-grid">
+
+<div class="mode-card">
+
+<div class="mode-icon">🏁</div>
+
+<h2>Solo Race</h2>
+
+<p>
+Balapan melawan mobil sistem.
+Cocok untuk bermain sendiri.
+</p>
+
+<button id="soloBtn">
+MAIN SOLO
+</button>
+
+</div>
+
+
+<div class="mode-card">
+
+<div class="mode-icon">👥</div>
+
+<h2>Mabar</h2>
+
+<p>
+Dua pemain dapat bermain
+bersama menggunakan satu perangkat.
+</p>
+
+<button id="mabarBtn">
+MAIN MABAR
+</button>
+
+</div>
+
+
+<div class="mode-card">
+
+<div class="mode-icon">🏆</div>
+
+<h2>Champion</h2>
+
+<p>
+Pilih tingkat kesulitan dan
+buktikan siapa pembalap terbaik.
+</p>
+
+<button id="champBtn">
+MULAI BALAP
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     DIFFICULTY
+========================= -->
+
+<section id="difficultyScreen" class="selection hidden">
+
+<h1>PILIH TANTANGAN</h1>
+
+<p class="selection-sub">
+Semakin sulit, semakin cepat lawan dan semakin banyak rintangan.
+</p>
+
+<div class="difficulty-grid">
+
+<div class="diff">
+
+<div style="font-size:50px">🟢</div>
+
+<h2>Mudah</h2>
+
+<p>
+Kecepatan lawan rendah.
+Rintangan sedikit.
+</p>
+
+<button data-difficulty="easy">
+PILIH MUDAH
+</button>
+
+</div>
+
+
+<div class="diff">
+
+<div style="font-size:50px">🟡</div>
+
+<h2>Sedang</h2>
+
+<p>
+Lawan lebih cepat.
+Rintangan mulai bertambah.
+</p>
+
+<button data-difficulty="medium">
+PILIH SEDANG
+</button>
+
+</div>
+
+
+<div class="diff">
+
+<div style="font-size:50px">🔴</div>
+
+<h2>Sulit</h2>
+
+<p>
+Lawan sangat cepat.
+Rintangan lebih banyak.
+</p>
+
+<button data-difficulty="hard">
+PILIH SULIT
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     RACE SCREEN
+========================= -->
+
+<section id="raceScreen" class="hidden">
+
+<div class="race-top">
+
+<div class="stats">
+
+<div class="stat">
+🏆 <span id="score">0</span>
+</div>
+
+<div class="stat">
+❤️ <span id="lives">3</span>
+</div>
+
+<div class="stat">
+⚡ <span id="speedText">0</span>
+</div>
+
+<div class="stat">
+🏁 <span id="lapText">0%</span>
+</div>
+
+</div>
+
+<div class="stat">
+<span id="raceMode">SOLO</span>
+</div>
+
+</div>
+
+
+<div class="race-area" id="raceArea">
+
+<div class="road"></div>
+
+<div class="road-line line1"></div>
+<div class="road-line line2"></div>
+
+<div class="finish"></div>
+
+<div id="countdown">
+3
+</div>
+
+<div id="playerCar"
+class="race-car player-car">
+🏎️
+</div>
+
+</div>
+
+
+<div class="controls">
+
+<div class="control-side">
+
+<button class="control-btn"
+id="leftBtn">
+⬅️
+</button>
+
+<button class="control-btn"
+id="rightBtn">
+➡️
+</button>
+
+</div>
+
+
+<div class="control-side">
+
+<button class="control-btn brake"
+id="brakeBtn">
+🛑
+</button>
+
+<button class="control-btn gas"
+id="gasBtn">
+🔥
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     RESULT
+========================= -->
+
+<section id="resultScreen"
+class="screen hidden">
+
+<div class="result-box">
+
+<div class="trophy">
+🏆
+</div>
+
+<h1>RACE FINISHED!</h1>
+
+<p id="winnerText">
+Pembalap terbaik!
+</p>
+
+<div class="result-list"
+id="resultList">
+</div>
+
+<button
+class="result-btn"
+id="backMenuBtn">
+KEMBALI KE MENU
+</button>
+
+</div>
+
+</section>
+
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+
+/* =========================
+   SCREEN
+========================= */
+
+function showScreen(screen){
+
+    [
+        "loginScreen",
+        "menuScreen",
+        "difficultyScreen",
+        "raceScreen",
+        "resultScreen"
+    ].forEach(id=>{
+        $(id).classList.add("hidden");
+    });
+
+    $(screen).classList.remove("hidden");
+}
+
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+let notificationTimer;
+
+function notify(text,type="warning"){
+
+    const box=$("notification");
+
+    box.textContent=text;
+
+    box.className="";
+
+    box.id="notification";
+
+    box.classList.add(type);
+    box.classList.add("show");
+
+    clearTimeout(notificationTimer);
+
+    notificationTimer=setTimeout(()=>{
+        box.classList.remove("show");
+    },2500);
+}
+
+
+/* =========================
+   ACCOUNT
+========================= */
+
+let registerMode=false;
+
+$("switchText").onclick=()=>{
+
+    registerMode=!registerMode;
+
+    $("switchText").textContent=
+        registerMode
+        ? "Sudah punya akun? Masuk"
+        : "Belum punya akun? Daftar";
+
+    notify(
+        registerMode
+        ? "📝 Mode pendaftaran aktif"
+        : "🔐 Mode login aktif",
+        "warning"
+    );
+};
+
+
+$("loginForm").onsubmit=e=>{
+
+    e.preventDefault();
+
+    const username=$("username").value.trim();
+    const password=$("password").value;
+
+    if(!username || !password){
+
+        notify(
+            "❌ Data belum lengkap",
+            "error"
+        );
+
+        return;
+    }
+
+    const savedUser=
+        JSON.parse(localStorage.getItem("speedRushUser") || "null");
+
+
+    if(registerMode){
+
+        if(savedUser && savedUser.username===username){
+
+            notify(
+                "❌ Username sudah digunakan",
+                "error"
+            );
+
+            return;
+        }
+
+        localStorage.setItem(
+            "speedRushUser",
+            JSON.stringify({
+                username,
+                password
+            })
+        );
+
+        notify(
+            "✅ Pendaftaran berhasil!",
+            "success"
+        );
+
+        registerMode=false;
+
+        $("switchText").textContent=
+            "Belum punya akun? Daftar";
+
+        return;
+    }
+
+
+    if(
+        !savedUser ||
+        savedUser.username!==username
+    ){
+
+        notify(
+            "❌ Username salah",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(savedUser.password!==password){
+
+        notify(
+            "❌ Password salah",
+            "error"
+        );
+
+        return;
+    }
+
+
+    $("playerName").textContent=username;
+
+    showScreen("menuScreen");
+
+    notify(
+        "🎮 Selamat datang, "+username+"!",
+        "success"
+    );
+};
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+$("logoutBtn").onclick=()=>{
+
+    showScreen("loginScreen");
+
+    $("username").value="";
+    $("password").value="";
+
+    notify(
+        "👋 Kamu telah keluar dari game",
+        "warning"
+    );
+};
+
+
+/* =========================
+   MODE
+========================= */
+
+let gameMode="solo";
+
+
+$("soloBtn").onclick=()=>{
+    gameMode="solo";
+    showScreen("difficultyScreen");
+};
+
+
+$("champBtn").onclick=()=>{
+    gameMode="solo";
+    showScreen("difficultyScreen");
+};
+
+
+$("mabarBtn").onclick=()=>{
+
+    gameMode="mabar";
+
+    notify(
+        "👥 Mode Mabar 2 pemain dipilih!",
+        "success"
+    );
+
+    showScreen("difficultyScreen");
+};
+
+
+/* =========================
+   GAME VARIABLES
+========================= */
+
+let difficulty="easy";
+
+let gameRunning=false;
+
+let countdownRunning=false;
+
+let animation;
+
+let playerX=50;
+
+let playerSpeed=0;
+
+let maxSpeed=6;
+
+let distance=0;
+
+let score=0;
+
+let lives=3;
+
+let obstacles=[];
+
+let opponents=[];
+
+let raceStartTime=0;
+
+let gameTime=0;
+
+
+/* =========================
+   DIFFICULTY
+========================= */
+
+document.querySelectorAll("[data-difficulty]")
+.forEach(button=>{
+
+    button.onclick=()=>{
+
+        difficulty=
+            button.dataset.difficulty;
+
+        startRace();
+
+    };
+
+});
+
+
+function difficultySettings(){
+
+    if(difficulty==="easy"){
+
+        return {
+            max:5,
+            opponent:2.2,
+            obstacles:3
+        };
+
+    }
+
+    if(difficulty==="medium"){
+
+        return {
+            max:7,
+            opponent:3.4,
+            obstacles:5
+        };
+
+    }
+
+    return {
+        max:9,
+        opponent:4.8,
+        obstacles:8
+    };
+}
+
+
+/* =========================
+   START RACE
+========================= */
+
+function startRace(){
+
+    showScreen("raceScreen");
+
+    resetRace();
+
+    $("raceMode").textContent=
+        gameMode==="solo"
+        ? "SOLO"
+        : "MABAR";
+
+    countdown();
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetRace(){
+
+    cancelAnimationFrame(animation);
+
+    obstacles.forEach(o=>o.remove());
+
+    opponents.forEach(o=>o.remove());
+
+    obstacles=[];
+
+    opponents=[];
+
+    playerX=50;
+
+    playerSpeed=0;
+
+    distance=0;
+
+    score=0;
+
+    lives=3;
+
+    gameRunning=false;
+
+    $("score").textContent=0;
+
+    $("lives").textContent=3;
+
+    $("speedText").textContent=0;
+
+    $("lapText").textContent="0%";
+
+    $("playerCar").style.left=
+        "calc(50% - 29px)";
+
+}
+
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+function countdown(){
+
+    countdownRunning=true;
+
+    const box=$("countdown");
+
+    box.style.display="flex";
+
+    let number=3;
+
+    box.textContent=number;
+
+
+    const timer=setInterval(()=>{
+
+        number--;
+
+        if(number>0){
+
+            box.textContent=number;
+
+        }else{
+
+            clearInterval(timer);
+
+            box.textContent="GO!";
+
+            notify(
+                "🏁 BALAPAN DIMULAI!",
+                "success"
+            );
+
+            setTimeout(()=>{
+
+                box.style.display="none";
+
+                countdownRunning=false;
+
+                gameRunning=true;
+
+                raceStartTime=
+                    performance.now();
+
+                gameLoop();
+
+            },700);
+
+        }
+
+    },1000);
+
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+$("leftBtn").onpointerdown=()=>{
+    playerX-=5;
+};
+
+$("rightBtn").onpointerdown=()=>{
+    playerX+=5;
+};
+
+
+let gas=false;
+
+let brake=false;
+
+
+$("gasBtn").onpointerdown=()=>{
+    gas=true;
+};
+
+$("gasBtn").onpointerup=()=>{
+    gas=false;
+};
+
+$("gasBtn").onpointerleave=()=>{
+    gas=false;
+};
+
+
+$("brakeBtn").onpointerdown=()=>{
+    brake=true;
+};
+
+$("brakeBtn").onpointerup=()=>{
+    brake=false;
+};
+
+$("brakeBtn").onpointerleave=()=>{
+    brake=false;
+};
+
+
+document.addEventListener("keydown",e=>{
+
+    if(!gameRunning) return;
+
+    if(e.key==="ArrowLeft"){
+        playerX-=3;
+    }
+
+    if(e.key==="ArrowRight"){
+        playerX+=3;
+    }
+
+    if(e.key==="ArrowUp"){
+        gas=true;
+    }
+
+    if(e.key==="ArrowDown"){
+        brake=true;
+    }
+
+});
+
+
+document.addEventListener("keyup",e=>{
+
+    if(e.key==="ArrowUp"){
+        gas=false;
+    }
+
+    if(e.key==="ArrowDown"){
+        brake=false;
+    }
+
+});
+
+
+/* =========================
+   CREATE OBSTACLE
+========================= */
+
+function createObstacle(){
+
+    const obstacle=
+        document.createElement("div");
+
+    obstacle.className="obstacle";
+
+    const types=[
+        "🚧",
+        "🛢️",
+        "🪨",
+        "🚙"
+    ];
+
+    obstacle.textContent=
+        types[
+            Math.floor(
+                Math.random()*types.length
+            )
+        ];
+
+    obstacle.style.left=
+        (15+Math.random()*70)+"%";
+
+    obstacle.style.top="-70px";
+
+    $("raceArea").appendChild(obstacle);
+
+    obstacles.push(obstacle);
+
+}
+
+
+/* =========================
+   CREATE AI
+========================= */
+
+function createAI(){
+
+    const ai=
+        document.createElement("div");
+
+    ai.className=
+        "race-car ai-car";
+
+    ai.textContent="🚘";
+
+    ai.style.left=
+        (20+Math.random()*60)+"%";
+
+    ai.style.top="-100px";
+
+    $("raceArea").appendChild(ai);
+
+    opponents.push(ai);
+
+}
+
+
+/* =========================
+   COLLISION
+========================= */
+
+function collision(a,b){
+
+    const A=a.getBoundingClientRect();
+
+    const B=b.getBoundingClientRect();
+
+    return !(
+        A.bottom<B.top ||
+        A.top>B.bottom ||
+        A.right<B.left ||
+        A.left>B.right
+    );
+
+}
+
+
+/* =========================
+   GAME LOOP
+========================= */
+
+function gameLoop(){
+
+    if(!gameRunning)return;
+
+
+    const settings=
+        difficultySettings();
+
+
+    /* GAS */
+
+    if(gas){
+
+        playerSpeed+=.18;
+
+    }else{
+
+        playerSpeed-=.05;
+
+    }
+
+
+    /* BRAKE */
+
+    if(brake){
+
+        playerSpeed-=.35;
+
+    }
+
+
+    playerSpeed=
+        Math.max(
+            0,
+            Math.min(
+                settings.max,
+                playerSpeed
+            )
+        );
+
+
+    playerX=
+        Math.max(
+            10,
+            Math.min(
+                90,
+                playerX
+            )
+        );
+
+
+    $("playerCar").style.left=
+        `calc(${playerX}% - 29px)`;
+
+
+    $("speedText").textContent=
+        Math.floor(playerSpeed*30);
+
+
+    distance+=
+        playerSpeed*.045;
+
+
+    $("lapText").textContent=
+        Math.min(
+            100,
+            Math.floor(distance)
+        )+"%";
+
+
+    score+=
+        Math.floor(playerSpeed*.1);
+
+
+    $("score").textContent=
+        score;
+
+
+    /* ROAD ANIMATION */
+
+    const lines=
+        document.querySelectorAll(
+            ".road-line"
+        );
+
+    lines.forEach(line=>{
+
+        let current=
+            parseFloat(
+                line.dataset.pos || 0
+            );
+
+        current+=
+            playerSpeed*2;
+
+        if(current>100)
+            current=0;
+
+        line.style.transform=
+            `translateY(${current}px)`;
+
+        line.dataset.pos=current;
+
+    });
+
+
+    /* OBSTACLE */
+
+    if(
+        Math.random()<
+        .018+(settings.obstacles*.001)
+    ){
+
+        createObstacle();
+
+    }
+
+
+    obstacles.forEach((obstacle,index)=>{
+
+        let top=
+            parseFloat(
+                obstacle.style.top
+            );
+
+        top+=
+            playerSpeed*1.5+2;
+
+        obstacle.style.top=
+            top+"px";
+
+
+        if(
+            collision(
+                $("playerCar"),
+                obstacle
+            )
+        ){
+
+            lives--;
+
+            $("lives").textContent=
+                lives;
+
+            obstacle.remove();
+
+            obstacles.splice(index,1);
+
+            notify(
+                "💥 Menabrak rintangan!",
+                "error"
+            );
+
+            if(lives<=0){
+
+                finishRace();
+
+            }
+
+        }
+
+
+        if(top>650){
+
+            obstacle.remove();
+
+        }
+
+    });
+
+
+    /* AI */
+
+    if(
+        gameMode==="solo" &&
+        opponents.length===0
+    ){
+
+        createAI();
+
+    }
+
+
+    opponents.forEach(ai=>{
+
+        let top=
+            parseFloat(
+                ai.style.top
+            );
+
+        top+=
+            settings.opponent+
+            playerSpeed*.4;
+
+        ai.style.top=
+            top+"px";
+
+
+        if(top>650){
+
+            ai.style.top="-100px";
+
+            ai.style.left=
+                (15+Math.random()*70)+"%";
+
+        }
+
+    });
+
+
+    /* FINISH */
+
+    if(distance>=100){
+
+        finishRace();
+
+        return;
+
+    }
+
+
+    animation=
+        requestAnimationFrame(
+            gameLoop
+        );
+
+}
+
+
+/* =========================
+   FINISH
+========================= */
+
+function finishRace(){
+
+    if(!gameRunning)return;
+
+    gameRunning=false;
+
+    cancelAnimationFrame(animation);
+
+
+    let playerPosition=1;
+
+
+    if(gameMode==="solo"){
+
+        const settings=
+            difficultySettings();
+
+        const aiDistance=
+            settings.opponent*18;
+
+        if(
+            aiDistance>
+            distance
+        ){
+
+            playerPosition=2;
+
+        }
+
+    }
+
+
+    showResults(playerPosition);
+
+}
+
+
+/* =========================
+   RESULTS
+========================= */
+
+function showResults(position){
+
+    showScreen("resultScreen");
+
+
+    let winner="";
+
+
+    if(position===1){
+
+        winner=
+            "🎉 SELAMAT! KAMU JUARA 1!";
+
+    }else{
+
+        winner=
+            "😮 Kamu finish di posisi 2!";
+
+    }
+
+
+    $("winnerText").textContent=
+        winner;
+
+
+    const list=
+        $("resultList");
+
+    list.innerHTML="";
+
+
+    if(gameMode==="mabar"){
+
+        list.innerHTML=`
+
+        <div class="result-item">
+            <span>🥇 Player 1</span>
+            <strong>
+                ${position===1?"JUARA 1":"JUARA 2"}
+            </strong>
+        </div>
+
+        <div class="result-item">
+            <span>🥈 Player 2</span>
+            <strong>
+                ${position===2?"JUARA 1":"JUARA 2"}
+            </strong>
+        </div>
+
+        `;
+
+    }else{
+
+        list.innerHTML=`
+
+        <div class="result-item">
+            <span>🥇 Kamu</span>
+            <strong>
+                ${position===1?"JUARA 1":"JUARA 2"}
+            </strong>
+        </div>
+
+        <div class="result-item">
+            <span>🥈 Sistem</span>
+            <strong>
+                ${position===2?"JUARA 1":"JUARA 2"}
+            </strong>
+        </div>
+
+        `;
+
+    }
+
+
+    notify(
+        position===1
+        ? "🏆 Kamu menjadi juara!"
+        : "🏁 Balapan selesai!",
+        position===1
+        ? "success"
+        : "warning"
+    );
+
+}
+
+
+/* =========================
+   BACK MENU
+========================= */
+
+$("backMenuBtn").onclick=()=>{
+
+    showScreen("menuScreen");
+
+    notify(
+        "🏠 Kembali ke menu utama",
+        "success"
+    );
+
+};
+
+</script>
+
+</body>
+</html>
